@@ -1,5 +1,6 @@
 # Opengl-simple-translation-rotation-render
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/89361982/130404092-61d0ef73-492c-4745-8203-6d6117d3f206.gif)
+![ezgif com-gif-maker2](https://user-images.githubusercontent.com/89361982/130409344-de97f526-a09d-4b89-88c0-d4e49a9acb00.gif)
+
 
 in order to build this you may need to relink glm
