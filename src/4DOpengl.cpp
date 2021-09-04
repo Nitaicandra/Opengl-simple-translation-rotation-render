@@ -1,21 +1,7 @@
 // 4DOpengl.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
-#include <glew.h>
-#include <glfw3.h>
-
-#include <fstream>
-#include<sstream>
-#include<string>
-#include<iostream>
-
-#include <glm.hpp>
-#include <vec2.hpp>
-#include <vec3.hpp>
-#include <vec4.hpp>
-#include <mat4x4.hpp>
-#include <gtc\matrix_transform.hpp>
-#include <gtc\type_ptr.hpp>
+#include <libs.h>
+//test
 
 //ERROR CHECKING============================================================================================================================
 #define ASSERT(x) if (!(x)) __debugbreak();
