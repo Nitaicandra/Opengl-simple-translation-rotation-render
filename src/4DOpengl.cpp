@@ -1,7 +1,27 @@
 // 4DOpengl.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-#include <libs.h>
-//test
+#define _USE_MATH_DEFINES
+#include <glew.h>
+#include <glfw3.h>
+
+#include <fstream>
+#include<sstream>
+#include <vector>
+#include <math.h>
+#include<string>
+#include<iostream>
+#include <stdexcept>
+#include<array>
+
+#include <glm.hpp>
+#include <vec2.hpp>
+#include <vec3.hpp>
+#include <vec4.hpp>
+#include <mat4x4.hpp>
+#include <gtc\matrix_transform.hpp>
+#include <gtc\type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
+
 
 //ERROR CHECKING============================================================================================================================
 #define ASSERT(x) if (!(x)) __debugbreak();
@@ -13,7 +33,6 @@ static void GLClearError()
 {
     while (glGetError() != GL_NO_ERROR);
 }
-
 static bool GLLogCall( const char* function, const char* file, int line) 
 {
     while (GLenum error = glGetError())
@@ -30,7 +49,6 @@ struct ShaderProgramSource
     std::string VertexSource;
     std::string FragmentSource;
 };
-
 static ShaderProgramSource ParseShader(const std::string& filepath) {
 
     std::ifstream stream(filepath);
@@ -69,10 +87,7 @@ static ShaderProgramSource ParseShader(const std::string& filepath) {
 
     return{ ss[0].str(), ss[1].str() };
 }
-
-
 //compile and create shader===============================================================================================================================
-
 static unsigned int CompileShader( unsigned int type, const std::string& source)
 {
 
@@ -99,7 +114,6 @@ static unsigned int CompileShader( unsigned int type, const std::string& source)
 
    return id;
 }
-
 static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) 
 {
 
@@ -118,48 +132,120 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
     return program;
 
 }
-//===========================================================================================================================================================
-// framebuffer
+//UNUSED FRAME BUFFER===========================================================================================================================================================
 void framebuffer_resize_callback(GLFWwindow* window, int fbw, int fbh) {
     glViewport(0, 0, fbw, fbh);
 }
 // INPUT---------------------------------------------------------------------------------------------------------------------------------------------------------- 
-void updateInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale) {
+//void updateInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale) {
+//    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+//        position.z += 0.01f;
+//    }
+//    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+//        position.z -= 0.01f;
+//    }
+//    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+//        position.x -= 0.01f;
+//    }
+//    if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+//        position.x += 0.01f;
+//    }
+//    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+//        rotation.y -= 0.5f;
+//    }
+//    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+//        rotation.y += 0.5f;
+//    }
+//    
+//}
+//
+void updateInput(GLFWwindow* window,float& tx,float& ty, float& tz,  float& rx, float& ry, float& rz) {
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        position.z += 0.01f;
+        tz += 0.01f;
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        position.z -= 0.01f;
+        tz -= 0.01f;
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        position.x += 0.01f;
+        tx -= 0.01f;
     }
     if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
-        position.x -= 0.01f;
+        tx += 0.01f;
     }
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        rotation.y -= 0.5f;
+        rz -= 0.01f;
     }
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-        rotation.y += 0.5f;
+        rz += 0.01f;
     }
-    
-}
 
-//INPUT-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        ty += 0.01f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        ty -= 0.01f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+        rx -= 0.01f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+        rx += 0.01f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
+        ry -= 0.01f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+        ry += 0.01f;
+    }
+
+}
+//-MATRIX MULTIPLICATION=========================================================================================================================================================
+void MatMul4x4(float A1[], float A2[], float result[16]) {
+
+
+    for (int i = 0; i < 4; i++) {  // r1  doent work for some reason
+
+        for (int j = 0; j < 4; j++) { //c2
+            float sum = 0.f;
+            for (int k = 0; k < 4; k++) { //c1 & r2
+                sum += A1[(i * 4) + k] * A2[(k * 4) + j];
+            }
+
+            result[(i * 4) + j] = sum;
+        }
+    }
+
+}
+void MatMul5x5(float A1[], float A2[], float(&result)[25]) {
+
+
+    for (int i = 0; i < 5; i++) {  // r1  doent work for some reason
+
+        for (int j = 0; j < 5; j++) { //c2
+            float sum = 0.f;
+            for (int k = 0; k < 5; k++) { //c1 & r2
+                sum += A1[(i * 5) + k] * A2[(k * 5) + j];
+            }
+
+            result[(i * 5) + j] = sum;
+        }
+    }
+
+}
+////===============================================================================================================================================================================
 int main(void)
 {
-    
+    glfwWindowHint(GLFW_SAMPLES, 4); // mssaa anti aliasting
     GLFWwindow* window;
 
     /* Initialize the library */
     if (!glfwInit())
         return -1;
 
-    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+   // glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(1080, 1080, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -175,7 +261,7 @@ int main(void)
     // Make the window's context current 
     glfwMakeContextCurrent(window);
 
-    glewExperimental = GL_TRUE;
+    //glewExperimental = GL_TRUE;
     // vsync
     glfwSwapInterval(1);
 
@@ -184,17 +270,18 @@ int main(void)
         std::cout << "ERROR";
     }
     //positions
-    float positions[] = {
+   float positions[]= {
        -0.5f, -0.5f, 0.5f,         1.f,0.f,0.f,
         0.5f, -0.5f, 0.5f,         1.f,0.f,0.f,
-        0.5f,  0.5f, 0.5f,         1.f,0.f,0.f,
+        0.5f,  0.5f, 0.5f,         1.f,1.f,0.f,
        -0.5f,  0.5f, 0.5f,         1.f,0.f,0.f,
 
-       -0.5f, -0.5f,-0.5f,         0.f,0.f,1.f,
+       -0.5f, -0.5f,-0.5f,         0.f,1.f,1.f,
        0.5f, -0.5f, -0.5f,         0.f,0.f,1.f,
        0.5f,  0.5f, -0.5f,         0.f,0.f,1.f,
       -0.5f,  0.5f, -0.5f,         0.f,0.f,1.f
     };
+    
     //index buffer
     unsigned int indices[] = {
         0,1,
@@ -247,64 +334,208 @@ int main(void)
 
     float r = 0.0f;
     float increment = 0.05f;
+ 
+    //ARRAYModel Matrix-----------------------------------------------------------------------------------------------------------------------------
+   
 
+ // float ModelMatrix[]{
+ //  {1.f,0.f,0.f,0.f},
+ //  {0.f,1.f,0.f,0.f},
+ //  {0.f,0.f,1.f,0.f},
+ //  {0.f,0.f,0.f,1.f}
+ //
+ //};  
 
-    //Model Matrix-----------------------------------------------------------------------------------------------------------------------------
-    glm::vec3 position(0.f);
-    glm::vec3 rotation(0.f);
-    glm::vec3 scale(0.5f);
-    glm::mat4 ModelMatrix(1.f);
-
-    //position.z = -2;
+// float ModelMatrix[4][4]{
+//{1.f,0.f,0.f,0.f},
+//{0.f,1.f,0.f,0.f},
+//{0.f,0.f,1.f,0.f},
+//{0.f,0.f,0.f,1.f}
+//
+// };
+//float xRotateMatrix[4][4]{
+ //{1.f, 0.f,        0.f,        0.f},
+ //{0.f, cos(rx),    sin(rx),    0.f},
+ //{0.f,-sin(rx),    cos(rx),    0.f},
+ //{0.f, 0.f,        0.f,        1.f}
+ //  };
     
-    ModelMatrix = glm::translate(ModelMatrix, position);
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-    ModelMatrix = glm::scale(ModelMatrix, scale);
+//float xRotateMatrix[]{
+//1.f, 0.f,        0.f,        0.f,
+//0.f, cos(rx),    sin(rx),    0.f,
+//0.f,-sin(rx),    cos(rx),    0.f,
+//0.f, 0.f,        0.f,        1.f
+//};
 
-    GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix)));
 
-    //View Matrix-------------------------------------------------------------------------------------------------------------------------------
-    glm::vec3 camPosition(0.f, 0.f, 2.f);
-    glm::vec3 worldUp = glm::vec3(0.f,1.f,0.f);
-    glm::vec3 camFront = glm::vec3(0.f, 0.f, -1.f);
-    glm::mat4 ViewMatrix(1.f);
-    ViewMatrix = glm::lookAt(camPosition, camPosition + camFront, worldUp);
+    float tx = 0.0f;
+    float ty = 0.0f;
+    float tz = 0.0f;
+
+    float sx = 1.0f;
+    float sy = 1.0f;
+    float sz = 1.0f;
+    float s = 1.0f;
+
+
+    float rx = 0.0f;
+    float ry = 0.0f;
+    float rz = 0.0f;
+
+
+
+ float TranslateScaleMatrix[16]{
+     s,0.f,0.f,0.f,
+     0.f,s,0.f,0.f,
+     0.f,0.f,s,0.f,
+     tx, ty ,tz, 1.f
+  
+  };  
+
+
+  float xRotateMatrix[16]{
+    1.f, 0.f,        0.f,        0.f,
+    0.f, cos(rx),    sin(rx),    0.f,
+    0.f,-sin(rx),    cos(rx),    0.f,
+    0.f, 0.f,        0.f,        1.f
+  };
+
+float yRotateMatrix[16]{
+    cos(ry),  0.f,-sin(ry) ,  0.f,
+    0.f,      1.f,    0.f,    0.f,
+    sin(ry),  0.f,cos(ry),    0.f,
+    0.f,      0.f,    0.f,    1.f
+
+};
+
+  float zRotateMatrix[16]{
+    cos(rz), sin(rz), 0.f,    0.f,
+    -sin(rz),cos(rz), 0.f,    0.f,
+    0.f,     0.f,     1.f,    0.f,
+    0.f,     0.f,     0.f,    1.f
+  };
+
+  float Result[16]{};
+
+  MatMul4x4(TranslateScaleMatrix, xRotateMatrix, Result);
+  MatMul4x4(Result, yRotateMatrix, Result);
+  MatMul4x4(Result, zRotateMatrix, Result);
+
+GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ModelMatrix"), 1, GL_FALSE, Result));
+//ARRAYViewMatrix-------------------------------------------------------------------------------------------------------------------------------
+ //glm::vec3 camPosition(0.f, 0.f, 2.f);
+ //glm::vec3 camFront = glm::vec3(0.f, 0.f, -1.f);
+ //glm::vec3 worldUp = glm::vec3(0.f,1.f,0.f);
+//ViewMatrix = glm::lookAt(camPosition, camPosition + camFront, worldUp);
+  //float ViewMatrix[4][4]{
+  //     {1.f,0.f,0.f,0.f},
+  //     {0.f,1.f,0.f,0.f},
+  //     {0.f,0.f,1.f,0.f},
+  //     {0.f,0.f,0.f,1.f}
+  //
+  //};
+
+ //   float ViewMatrix[4][4]{
+ //          {1.f,0.f,0.f,0.f},
+ //          {0.f,1.f,0.f,0.f},
+ //          {0.f,0.f,1.f,0.f},
+ //          {0.f,0.f,0.f,0.f}
+ //   };
+float camPosition[] = { 0.f,0.f,2.f };// == to eye in glu
+float camFront[] = { 0.f,0.f,-1.f };
+float target[] = { 0.f,0.f,1 }; // camPosition + camFront  == center in glu
+float worldUp[] = { 0.f,1.f,0.f };   // normalize
+
+float f[]{0.f,0.f,-1.f};   // = center-eye   == camfront    normalize
+float S[]{ 1.f,0.f,0.f };    //= f x up cross produce idk
+float u[]{ 0.f,1.f,0.f };  //= s x f cross produce idk
+
+float ViewMatrix[]{
+    1.f,    0.f,    0.f,    0.f,
+    0.f,    1.f,    0.f,    0.f,
+    0.f,    0.f,    1.f,    0.f,
+    0.f,    0.f,    -2.f,   1.f, 
+};
+
+  GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ViewMatrix"), 1, GL_FALSE, ViewMatrix));
+
+  //ARRAYPROJECTION------------------------------------------------------------------------------------------------------------------------------------------------------
 
     float fov = 45.f;
-    float nearPlane = 0.1f;
+    float Svar = 1 / tan((fov / 2) * (M_PI / 180));
+    float nearPlane = 0.f;
     float farPlane = 1000.f;
-    glm::mat4 ProjectionMatrix(1.f);
+    std::cout << Svar;
+ 
+    float Perspective[]{
+   Svar,    0.f,    0.f,    0.f,
+   0.f,    Svar,   0.f,    0.f,
+   0.f,    0.f,    (-1 * farPlane) / (farPlane - nearPlane),    (-1 * farPlane) / (farPlane - nearPlane),
+   0.f,    0.f,    -1.f,   1.f,
+    };
+    GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ProjectionMatrix"), 1, GL_FALSE, Perspective));
+//GLMMODELMATRIX-----------------------------------------------------------------------
 
-    ProjectionMatrix = glm::perspective(
-    glm::radians(fov),
-        static_cast<float>(framebufferWidth) / framebufferHeight,
-        nearPlane, farPlane
-    );
-    GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix)));
-
+ //glm::vec3 position(0.f);
+ //glm::vec3 rotation(0.f);
+ //glm::vec3 scale(0.5f);
+ //glm::mat4 ModelMatrix(1.f);
+ 
+ //ModelMatrix = glm::translate(ModelMatrix, position);
+ //ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
+ //ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
+ //ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
+ //ModelMatrix = glm::scale(ModelMatrix, scale);
+ 
+ //GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix)));
+ //GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ModelMatrix"), 1, GL_FALSE, &ModelMatrix[0][0]));
     
-    GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix)));
+//// GLMVIEWMATRIX-------------------------------------------------------------------------------------------------------------------------------
+//glm::vec3 camPosition(0.f, 0.f, 2.f);
+//glm::vec3 worldUp = glm::vec3(0.f,1.f,0.f);
+//glm::vec3 camFront = glm::vec3(0.f, 0.f, -1.f);
+//glm::mat4 ViewMatrix(1.f);
+//ViewMatrix = glm::lookAt(camPosition, camPosition + camFront, worldUp);
+////
+// GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix)));
+////
+// std::cout << glm::to_string(ViewMatrix) << std::endl;
+//GLMPROJECTIONMATRIX-------------------------------------------------------------------------------------------------------------------------------
+//float fov = 45.f;
+//float nearPlane = 0.1f;
+//float farPlane = 1000.f;
+//glm::mat4 ProjectionMatrix(1.f);  
+//ProjectionMatrix = glm::perspective(
+//glm::radians(fov),
+//   static_cast<float>(framebufferWidth) / framebufferHeight,
+//   nearPlane, farPlane
+//);
+//
+//
+//GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix)));
+//  
     
-    //GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix)));
    
 
     //-OPTIONS------------------------------------------------------------------------------------------------------------------------------
+    //glEnable(GL_MULTISAMPLE);
+   //glEnable(GL_BLEND);
+    //GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE););
+    //GLCall(glFrontFacwe(GL_CCW));
+    GLCall(glEnable(GL_DEPTH_TEST));
+    glPointSize(4);
+    glEnable(GL_POINT_SMOOTH);
+    glEnable(GL_LINE_SMOOTH);
     
     
-    GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE););
-    // GLCall(glFrontFace(GL_CCW));
-    //GLCall(glEnable(GL_DEPTH_TEST));
+   
 
 
-    /* Loop until the user closes the window ===================================================================================================================================*/
+    /*MAIN LOOP Loop until the user closes the window ===================================================================================================================================*/
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT));
-
-        
 
         //uniforms and color stuff- might need to go after draw elements---------------------------------------------------------------
         GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
@@ -312,30 +543,117 @@ int main(void)
                 else if(r < 0.0f) increment = 0.05f;
 
         r += increment;
-        //ROTATIONModelMatrix----------------------------------------------------------------------------------------
-        
-       // position.x += 0.001f;
-        ModelMatrix = glm::mat4(1.f);
-        ModelMatrix = glm::translate(ModelMatrix, position);
-        ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-        ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-        ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-        ModelMatrix = glm::scale(ModelMatrix, scale);
 
-        
-        GLCall(int local = glGetUniformLocation(shader, "ModelMatrix"));
-        GLCall(glUniformMatrix4fv(local, 1, GL_FALSE, glm::value_ptr(ModelMatrix)));
 
-        //View Matrix----------------------------------------------------------------------------------------------
-        ProjectionMatrix = glm::mat4(1.f);
-        ProjectionMatrix = glm::perspective(
-            glm::radians(fov),
-            static_cast<float>(framebufferWidth) / framebufferHeight,
-            nearPlane, farPlane
-        );
-        glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
-        GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix)));
+     //arrayROTATIONModelMatrix----------------------------------------------------------------------------------------
+     
+     //float xRotateMatrix[]{
+     //   1.f, 0.f,        0.f,        0.f,
+     //   0.f, cos(rx),    sin(rx),    0.f,
+     //   0.f,-sin(rx),    cos(rx),    0.f,
+     //   0.f, 0.f,        0.f,        1.f
+     //};
         
+     float TranslateScaleMatrix[16]{
+      s,0.f,0.f,0.f,
+      0.f,s,0.f,0.f,
+      0.f,0.f,s,0.f,
+      tx, ty ,tz, 1.f
+
+     };
+
+    
+
+     float xRotateMatrix[16]{
+       1.f, 0.f,        0.f,        0.f,
+       0.f, cos(rx),    sin(rx),    0.f,
+       0.f,-sin(rx),    cos(rx),    0.f,
+       0.f, 0.f,        0.f,        1.f
+     };
+
+     float yRotateMatrix[16]{
+         cos(ry),  0.f,-sin(ry) ,  0.f,
+         0.f,      1.f,    0.f,    0.f,
+         sin(ry),  0.f,cos(ry),    0.f,
+         0.f,      0.f,    0.f,    1.f
+
+     };
+
+     float zRotateMatrix[16]{
+       cos(rz), sin(rz), 0.f,    0.f,
+       -sin(rz),cos(rz), 0.f,    0.f,
+       0.f,     0.f,     1.f,    0.f,
+       0.f,     0.f,     0.f,    1.f
+     };
+
+     float Result1[16]{  };
+
+     float Result2[16]{};
+     float Result[16]{ };
+
+     MatMul4x4( xRotateMatrix, yRotateMatrix, Result1);
+     MatMul4x4(Result1, zRotateMatrix, Result2);
+     MatMul4x4(Result2, TranslateScaleMatrix, Result);
+     
+
+     GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ModelMatrix"), 1, GL_FALSE, Result));
+
+     float Reverse[16]{
+         1,     0.f,    0.f,    0.f,
+         0.f,   1,      0.f,    0.f,
+         0.f,   0.f,    -1.f,   0.f,
+         0,     0 ,     0,      1.f
+
+     };
+
+     GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ReverseMatrix"), 1, GL_FALSE, Reverse));
+
+     //ARRAY PROJECTION MATRIX
+ float Perspective[]{
+ Svar,    0.f,    0.f,    0.f,
+ 0.f,    Svar,    0.f,    0.f,
+ 0.f,    0.f,   (-1 * farPlane) / (farPlane - nearPlane),    (-1 * farPlane) / (farPlane - nearPlane),
+ 0.f,    0.f,    -1.f,   0.f,
+ };
+
+        float Perspective2[]{
+        Svar,    0.f,    0.f,    0.f,  
+        0.f,    0,   (-1 * farPlane) / (farPlane - nearPlane),    (-1 * farPlane) / (farPlane - nearPlane),
+        0.f,    0.f,    (-1 * farPlane) / (farPlane - nearPlane),    (-1 * farPlane) / (farPlane - nearPlane),  
+        0.f,    0.f,    0.f,   1.f,    
+        };
+glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+    GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ProjectionMatrix"), 1, GL_FALSE, Perspective));
+
+
+   //glmROTATIONModelMatrix----------------------------------------------------------------------------------------
+        
+ //rotation.x += 0.1f;
+ //ModelMatrix = glm::mat4(1.f);
+ //ModelMatrix = glm::translate(ModelMatrix, position);
+ //ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
+ //ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
+ //ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
+ //ModelMatrix = glm::scale(ModelMatrix, scale);
+ //
+ //
+ //GLCall(int local = glGetUniformLocation(shader, "ModelMatrix"));
+ ////GLCall(glUniformMatrix4fv(local, 1, GL_FALSE, glm::value_ptr(ModelMatrix)));
+ //  GLCall(glUniformMatrix4fv(local, 1, GL_FALSE, &ModelMatrix[0][0]));
+
+
+
+    //GLMPROJACTION----------------------------------------------------------------------------------------------
+
+   //ProjectionMatrix = glm::mat4(1.f);
+   //ProjectionMatrix = glm::perspective(
+   //    glm::radians(fov),
+   //    static_cast<float>(framebufferWidth) / framebufferHeight,
+   //    nearPlane, farPlane
+   //);
+   //glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+   //GLCall(glUniformMatrix4fv(glGetUniformLocation(shader, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix)));
+  // 
         //DRAW----------------------------------------------------------------------------------------------------------
         GLCall(glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, nullptr););
 
@@ -344,7 +662,7 @@ int main(void)
 
         /* Poll for and process events */
         glfwPollEvents();
-        updateInput(window, position, rotation, scale);
+        updateInput(window, tx, ty, tz, rx, ry, rz); //UPDATE INPUT
     }
 
     GLCall(glDeleteProgram(shader););

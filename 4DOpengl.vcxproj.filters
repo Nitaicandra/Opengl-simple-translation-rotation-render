@@ -18,7 +18,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Linking\Include\MY_HEADERS\libs.h">
+    <ClInclude Include="Linking\Include\glxew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Linking\Include\wglew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Linking\Include\eglew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Linking\Include\glew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Linking\Include\glfw3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Linking\Include\glfw3native.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,9 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\4DOpengl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Linking\Include\MY_HEADERS\libs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,12 +11,14 @@ uniform mat4 ModelMatrix;
 uniform mat4 ViewMatrix;
 uniform mat4 ProjectionMatrix;
 
+uniform mat4 ReverseMatrix;
 
 
 void main()
 {
 	//position = vec4(ModelMatrix * vec4(position)).xyz;
-	gl_Position = ProjectionMatrix* ViewMatrix * ModelMatrix * position;
+	gl_Position=  ProjectionMatrix * ViewMatrix *ModelMatrix * position;
+	//gl_Position = ProjectionMatrix* ReverseMatrix * ViewMatrix *  ModelMatrix  * position;
 	vs_color = color;
 };
 

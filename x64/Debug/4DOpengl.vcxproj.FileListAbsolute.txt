@@ -1,5 +1,6 @@
 C:\REAL DOCUMENTS\Visual Studio 2019\REAL CODE\Visual Studio OpenGL\Opengl test\4DOpengl\x64\Debug\4DOpengl.exe
 C:\REAL DOCUMENTS\Visual Studio 2019\REAL CODE\Visual Studio OpenGL\Opengl test\4DOpengl\x64\Debug\4DOpengl.pdb
-C:\REAL DOCUMENTS\Visual Studio 2019\REAL CODE\Visual Studio OpenGL\Opengl test\3d rotation code\x64\Debug\4DOpengl.exe
-C:\REAL DOCUMENTS\Visual Studio 2019\REAL CODE\Visual Studio OpenGL\Opengl test\3d rotation code\x64\Debug\4DOpengl.pdb
-F:\REAL CODE\Visual Studio OpenGL\Opengl test\3d rotation code\x64\Debug\4DOpengl.exe
+C:\REAL DOCUMENTS\Visual Studio 2019\REAL CODE\Visual Studio OpenGL\Opengl test\Backup\4DOpengl\x64\Debug\4DOpengl.exe
+C:\REAL DOCUMENTS\Visual Studio 2019\REAL CODE\Visual Studio OpenGL\Opengl test\Backup\4DOpengl\x64\Debug\4DOpengl.pdb
+F:\EVERYTHINGELSE\REAL CODE\OLD\Opengl test\Backup\4DOpengl\x64\Debug\4DOpengl.exe
+F:\PURECLONES\Opengl-simple-translation-rotation-render\x64\Debug\4DOpengl.exe

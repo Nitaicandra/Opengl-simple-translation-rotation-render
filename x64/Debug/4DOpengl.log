@@ -1,20 +1,7 @@
-﻿Build started 9/4/2021 1:26:18 PM.
-Logging verbosity is set to: Normal.     1>Project "F:\REAL CODE\Visual Studio OpenGL\Opengl test\3d rotation code\4DOpengl.vcxproj" on node 2 (Build target(s)).
-     1>InitializeBuildStatus:
-         Creating "x64\Debug\4DOpengl.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
-       ClCompile:
-         All outputs are up-to-date.
-         All outputs are up-to-date.
-       Link:
-         All outputs are up-to-date.
-         4DOpengl.vcxproj -> F:\REAL CODE\Visual Studio OpenGL\Opengl test\3d rotation code\x64\Debug\4DOpengl.exe
-       FinalizeBuildStatus:
-         Deleting file "x64\Debug\4DOpengl.tlog\unsuccessfulbuild".
-         Touching "x64\Debug\4DOpengl.tlog\4DOpengl.lastbuildstate".
-     1>Done Building Project "F:\REAL CODE\Visual Studio OpenGL\Opengl test\3d rotation code\4DOpengl.vcxproj" (Build target(s)).
-
-Build succeeded.
-    0 Warning(s)
-    0 Error(s)
-
-Time Elapsed 00:00:00.06
+﻿  4DOpengl.cpp
+F:\PURECLONES\Opengl-simple-translation-rotation-render\src\4DOpengl.cpp(465,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+F:\PURECLONES\Opengl-simple-translation-rotation-render\src\4DOpengl.cpp(542,39): warning C4305: '=': truncation from 'double' to 'float'
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'F:\PURECLONES\Opengl-simple-translation-rotation-render\x64\Debug\vc120.pdb'; linking object as if no debug info
+  4DOpengl.vcxproj -> F:\PURECLONES\Opengl-simple-translation-rotation-render\x64\Debug\4DOpengl.exe

@@ -88,9 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_UNICODE;UNICODE;GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\Include\GLEW;$(SolutionDir)\Linking\Include\GLFW;$(SolutionDir)\Linking\Include\GLM;$(SolutionDir)\Linking\Include\MY_HEADERS;$(SolutionDir)\Linking\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>libs.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\Include\GLM;$(SolutionDir)\Linking\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,9 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_UNICODE;UNICODE;GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\Include\GLEW;$(SolutionDir)\Linking\Include\GLFW;$(SolutionDir)\Linking\Include\GLM;$(SolutionDir)\Linking\Include\MY_HEADERS;$(SolutionDir)\Linking\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>libs.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\Include\GLM;$(SolutionDir)\Linking\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,9 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_UNICODE;UNICODE;GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\Include\GLEW;$(SolutionDir)\Linking\Include\GLFW;$(SolutionDir)\Linking\Include\GLM;$(SolutionDir)\Linking\Include\MY_HEADERS;$(SolutionDir)\Linking\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>libs.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\Include\GLM;$(SolutionDir)\Linking\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,9 +139,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_UNICODE;UNICODE;GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\Include\GLEW;$(SolutionDir)\Linking\Include\GLFW;$(SolutionDir)\Linking\Include\GLM;$(SolutionDir)\Linking\Include\MY_HEADERS;$(SolutionDir)\Linking\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>libs.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Linking\Include\GLM;$(SolutionDir)\Linking\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,20 +151,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Linking\Include\MY_HEADERS\libs.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs.h</PrecompiledHeaderFile>
-    </ClCompile>
     <ClCompile Include="src\4DOpengl.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Linking\Include\MY_HEADERS\libs.h" />
+    <ClInclude Include="Linking\Include\eglew.h" />
+    <ClInclude Include="Linking\Include\glew.h" />
+    <ClInclude Include="Linking\Include\glfw3.h" />
+    <ClInclude Include="Linking\Include\glfw3native.h" />
+    <ClInclude Include="Linking\Include\glxew.h" />
+    <ClInclude Include="Linking\Include\wglew.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Linking\Lib\glew32s.lib" />
