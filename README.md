@@ -5,4 +5,6 @@
 
 An opengl program that renders a wireframe 3d cube to the screen and allows you to move it with your keyboard
 
+Implements hand written Translations Rotation and Projection matricies
+
 Built using Visual studio
